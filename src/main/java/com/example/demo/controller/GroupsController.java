@@ -1,11 +1,9 @@
 package com.example.demo.controller;
 
+import com.example.demo.controller.dto.GroupModifyRequest;
 import com.example.demo.controller.dto.GroupsResponse;
 import com.example.demo.service.GroupsService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,6 +26,13 @@ public class GroupsController {
     @GetMapping
     public List<GroupsResponse> getAllGroup() {
         return groupsService.getAllGroup();
+    }
+
+    @PatchMapping("/{groupId}")
+    public void modifyGroupName(@PathVariable("groupId") long groupId,
+                                @RequestBody GroupModifyRequest request) {
+
+        groupsService.modifyGroupName(groupId, request);
     }
 
 }

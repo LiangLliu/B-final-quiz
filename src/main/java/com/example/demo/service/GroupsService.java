@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.controller.dto.GroupModifyRequest;
 import com.example.demo.controller.dto.GroupsResponse;
 import com.example.demo.repository.GroupsRepository;
 import com.example.demo.repository.TraineeRepository;
@@ -78,5 +79,18 @@ public class GroupsService {
         List<GroupsEntity> groupsEntityList = groupsRepository.findAll();
         List<Groups> groupsList = GroupsEntity.toGroups(groupsEntityList);
         return GroupsResponse.fromGroups(groupsList);
+    }
+
+    public void modifyGroupName(long groupId, GroupModifyRequest request) {
+        // todo: 校验
+
+        Optional<GroupsEntity> groupsEntity = groupsRepository.findById(groupId);
+
+        // todo: name校验
+
+        GroupsEntity entity = groupsEntity.get();
+
+        entity.setName(request.getName());
+        groupsRepository.save(entity);
     }
 }
