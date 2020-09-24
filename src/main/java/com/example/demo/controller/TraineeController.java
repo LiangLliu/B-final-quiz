@@ -6,6 +6,9 @@ import com.example.demo.service.TraineeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
+import java.util.List;
+
 @RestController
 @RequestMapping("/trainees")
 public class TraineeController {
@@ -14,6 +17,12 @@ public class TraineeController {
 
     public TraineeController(TraineeService traineeService) {
         this.traineeService = traineeService;
+    }
+
+
+    @GetMapping
+    public List<TraineeResponse> getTrainee(@RequestParam(name = "grouped") boolean grouped) {
+        return traineeService.getAllTrainee(grouped);
     }
 
     @PostMapping

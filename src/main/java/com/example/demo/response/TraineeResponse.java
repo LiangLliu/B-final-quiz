@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -34,5 +37,11 @@ public class TraineeResponse {
                 .zoomId(trainee.getZoomId())
                 .email(trainee.getEmail())
                 .build();
+    }
+
+    public static List<TraineeResponse> fromTrainee(List<Trainee> trainees) {
+        return trainees.stream()
+                .map(TraineeResponse::fromTrainee)
+                .collect(Collectors.toList());
     }
 }

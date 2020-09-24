@@ -6,6 +6,8 @@ import com.example.demo.request.TraineeCreateRequest;
 import com.example.demo.response.TraineeResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TraineeService {
 
@@ -21,4 +23,11 @@ public class TraineeService {
         return TraineeResponse.fromTrainee(saveTrainee);
     }
 
+    public List<TraineeResponse> getAllTrainee(boolean grouped) {
+        if (!grouped) {
+            List<Trainee> trainees = traineeRepository.findAll();
+            return TraineeResponse.fromTrainee(trainees);
+        }
+       return null;
+    }
 }
