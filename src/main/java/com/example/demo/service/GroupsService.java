@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.controller.dto.GroupModifyRequest;
 import com.example.demo.controller.dto.GroupsResponse;
+import com.example.demo.exception.BaseBadRequestException;
+import com.example.demo.exception.GroupIdNotFoundException;
 import com.example.demo.repository.GroupsRepository;
 import com.example.demo.repository.TraineeRepository;
 import com.example.demo.repository.TrainerRepository;
@@ -32,9 +34,11 @@ public class GroupsService {
 
     public List<GroupsResponse> autoGrouping() {
 
-        // todo: 校验教室数量
         List<TraineeEntity> traineeEntities = traineeRepository.findAll();
         List<TrainerEntity> trainerEntities = trainerRepository.findAll();
+        if (traineeEntities.size() < 2) {
+            throw new BaseBadRequestException("教师小于2人，分组失败");
+        }
 
         List<Trainee> trainees = TraineeEntity.toTrainee(traineeEntities);
         List<Trainer> trainers = TrainerEntity.toTrainer(trainerEntities);
@@ -82,13 +86,20 @@ public class GroupsService {
     }
 
     public void modifyGroupName(long groupId, GroupModifyRequest request) {
-        // todo: 校验
 
-        Optional<GroupsEntity> groupsEntity = groupsRepository.findById(groupId);
+        Optional<GroupsEntity> optionalGroupsEntity = groupsRepository.findById(groupId);
 
-        // todo: name校验
+        if (!optionalGroupsEntity.isPresent()) {
+            throw new GroupIdNotFoundException("此分组不存在");
+        }
 
-        GroupsEntity entity = groupsEntity.get();
+        GroupsEntity entity = optionalGroupsEntity.get();
+
+        List<GroupsEntity> groupsEntityList = groupsRepository.findAll();
+
+        if (groupsEntityList.stream().anyMatch(it -> request.getName().equals(it.getName()))) {
+            throw new BaseBadRequestException("分组名字重复，修改失败");
+        }
 
         entity.setName(request.getName());
         groupsRepository.save(entity);

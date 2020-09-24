@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.JUnitWebAppTest;
 import com.example.demo.controller.dto.GroupModifyRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,19 +39,48 @@ public class GroupsControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    public void should_modify_groups_name_when_get_groups() throws Exception {
+
+    @Nested
+    public class ModifyGroupNameTest {
+
+        private GroupModifyRequest groupModifyRequest;
+
+        @BeforeEach
+        public void init() throws Exception {
+            groupModifyRequest = GroupModifyRequest.builder()
+                    .name("name")
+                    .build();
+
+            mockMvc.perform(post(url + "/auto-grouping")
+                    .contentType("application/json;charset=UTF-8")
+                    .characterEncoding("UTF-8"))
+                    .andExpect(status().isOk());
+        }
+
+        @Test
+        public void should_modify_groups_name_when_get_groups() throws Exception {
+
+            mockMvc.perform(patch(url + "/1")
+                    .content(objectMapper.writeValueAsString(groupModifyRequest))
+                    .contentType("application/json;charset=UTF-8")
+                    .characterEncoding("UTF-8"))
+                    .andExpect(status().isOk());
+        }
 
 
-        GroupModifyRequest request = GroupModifyRequest.builder()
-                .name("name")
-                .build();
+        @Test
+        public void should_return_404_when_group_is_is_not_exist() throws Exception {
 
-        mockMvc.perform(patch(url + "/1")
-                .content(objectMapper.writeValueAsString(request))
-                .contentType("application/json;charset=UTF-8")
-                .characterEncoding("UTF-8"))
-                .andExpect(status().isOk());
+            groupModifyRequest.setName("test");
+
+            mockMvc.perform(patch(url + "/0")
+                    .content(objectMapper.writeValueAsString(groupModifyRequest))
+                    .contentType("application/json;charset=UTF-8")
+                    .characterEncoding("UTF-8"))
+                    .andExpect(status().isNotFound());
+        }
+
     }
+
 
 }

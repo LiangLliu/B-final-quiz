@@ -28,4 +28,13 @@ public class QuizExceptionHandler {
                 .build();
     }
 
+    @ExceptionHandler(BaseBadRequestException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResult handle(BaseBadRequestException exception) {
+        return ErrorResult.builder()
+                .message(exception.getMessage())
+                .build();
+    }
+
 }
