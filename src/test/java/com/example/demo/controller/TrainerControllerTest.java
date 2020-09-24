@@ -1,9 +1,12 @@
 package com.example.demo.controller;
 
 import com.example.demo.JUnitWebAppTest;
+import com.example.demo.controller.dto.TraineeCreateRequest;
 import com.example.demo.controller.dto.TrainerCreateRequest;
 import com.example.demo.controller.dto.TrainerResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
@@ -27,24 +30,51 @@ public class TrainerControllerTest {
 
     private final String url = "/trainers";
 
-    @Test
-    public void should_given_one_name_when_add_one_trainer() throws Exception {
+    @Nested
+    public class CreateTrainerTest {
 
-        TrainerCreateRequest trainerCreateRequest = TrainerCreateRequest.builder()
-                .name("张三")
-                .build();
 
-        String contentAsString = mockMvc.perform(post(url)
-                .content(objectMapper.writeValueAsString(trainerCreateRequest))
-                .contentType("application/json;charset=UTF-8")
-                .characterEncoding("UTF-8"))
-                .andExpect(status().isCreated())
-                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        private TrainerCreateRequest trainerCreateRequest;
 
-        TrainerResponse trainerResponse = objectMapper.readValue(contentAsString, TrainerResponse.class);
+        @BeforeEach
+        public void init() {
+            trainerCreateRequest = TrainerCreateRequest.builder()
+                    .name("张三")
+                    .build();
+        }
 
-        assertEquals(trainerCreateRequest.getName(), trainerResponse.getName());
+        @Test
+        public void should_given_one_name_when_add_one_trainer() throws Exception {
+
+            String contentAsString = mockMvc.perform(post(url)
+                    .content(objectMapper.writeValueAsString(trainerCreateRequest))
+                    .contentType("application/json;charset=UTF-8")
+                    .characterEncoding("UTF-8"))
+                    .andExpect(status().isCreated())
+                    .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+            TrainerResponse trainerResponse = objectMapper.readValue(contentAsString, TrainerResponse.class);
+
+            assertEquals(trainerCreateRequest.getName(), trainerResponse.getName());
+        }
+
+        @Test
+        public void should_return_400_when_given_name_is_null() throws Exception {
+            trainerCreateRequest.setName(null);
+            createTrainerErrorTest(trainerCreateRequest);
+        }
+
+        private void createTrainerErrorTest(TrainerCreateRequest trainerCreateRequest) throws Exception {
+
+            mockMvc.perform(post(url)
+                    .content(objectMapper.writeValueAsString(trainerCreateRequest))
+                    .contentType("application/json;charset=UTF-8")
+                    .characterEncoding("UTF-8"))
+                    .andExpect(status().isBadRequest());
+        }
+
     }
+
 
     @Test
     public void should_get_all_trainer_when_given_get_trainer_list_and_grouped_is_false() throws Exception {
