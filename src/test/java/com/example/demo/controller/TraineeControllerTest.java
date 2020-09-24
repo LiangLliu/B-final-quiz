@@ -4,6 +4,8 @@ import com.example.demo.JUnitWebAppTest;
 import com.example.demo.controller.dto.TraineeCreateRequest;
 import com.example.demo.controller.dto.TraineeResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,28 +27,55 @@ public class TraineeControllerTest {
 
     private final String url = "/trainees";
 
-    @Test
-    public void should_given_one_name_when_add_one_trainee() throws Exception {
 
-        TraineeCreateRequest traineeCreateRequest = TraineeCreateRequest.builder()
-                .name("张三")
-                .office("背景")
-                .email("zhangsan@b.com")
-                .github("zhangsan")
-                .zoomId("zhangsan")
-                .build();
+    @Nested
+    public class CreateTraineeTest {
 
-        String contentAsString = mockMvc.perform(post(url)
-                .content(objectMapper.writeValueAsString(traineeCreateRequest))
-                .contentType("application/json;charset=UTF-8")
-                .characterEncoding("UTF-8"))
-                .andExpect(status().isCreated())
-                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        private TraineeCreateRequest traineeCreateRequest;
 
-        TraineeResponse traineeResponse = objectMapper.readValue(contentAsString, TraineeResponse.class);
+        @BeforeEach
+        public void init() {
+            traineeCreateRequest = TraineeCreateRequest.builder()
+                    .name("张三")
+                    .office("背景")
+                    .email("zhangsan@b.com")
+                    .github("zhangsan")
+                    .zoomId("zhangsan")
+                    .build();
+        }
 
-        assertEquals(traineeCreateRequest.getName(), traineeResponse.getName());
-        assertEquals(traineeCreateRequest.getOffice(), traineeResponse.getOffice());
+        @Test
+        public void should_given_one_name_when_add_one_trainee() throws Exception {
+
+
+            String contentAsString = mockMvc.perform(post(url)
+                    .content(objectMapper.writeValueAsString(traineeCreateRequest))
+                    .contentType("application/json;charset=UTF-8")
+                    .characterEncoding("UTF-8"))
+                    .andExpect(status().isCreated())
+                    .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+            TraineeResponse traineeResponse = objectMapper.readValue(contentAsString, TraineeResponse.class);
+
+            assertEquals(traineeCreateRequest.getName(), traineeResponse.getName());
+            assertEquals(traineeCreateRequest.getOffice(), traineeResponse.getOffice());
+        }
+
+        @Test
+        public void should_return_400_when_given_name_is_null() throws Exception {
+            traineeCreateRequest.setName(null);
+            createTraineeErrorTest(traineeCreateRequest);
+        }
+
+        private void createTraineeErrorTest(TraineeCreateRequest traineeCreateRequest) throws Exception {
+
+            mockMvc.perform(post(url)
+                    .content(objectMapper.writeValueAsString(traineeCreateRequest))
+                    .contentType("application/json;charset=UTF-8")
+                    .characterEncoding("UTF-8"))
+                    .andExpect(status().isBadRequest());
+        }
+
     }
 
 
