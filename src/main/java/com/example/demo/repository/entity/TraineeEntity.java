@@ -66,4 +66,10 @@ public class TraineeEntity {
                 .map(TraineeEntity::toTrainee)
                 .collect(Collectors.toList());
     }
+
+    public static List<TraineeEntity> fromTrainee(List<Trainee> trainees) {
+        return trainees.stream()
+                .map(TraineeEntity::fromTrainee)
+                .collect(Collectors.toList());
+    }
 }

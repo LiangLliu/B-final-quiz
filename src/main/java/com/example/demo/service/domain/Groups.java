@@ -17,9 +17,14 @@ public class Groups {
 
     private String name;
 
-    private Integer Ranking;
+    private Long Ranking;
 
     private List<Trainer> trainers;
 
     private List<Trainee> trainees;
+
+    public Groups(List<Trainer> trainers, List<Trainee> trainees) {
+        this.trainers = trainers;
+        this.trainees = trainees;
+    }
 }

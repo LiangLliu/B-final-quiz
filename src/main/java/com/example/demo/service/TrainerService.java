@@ -33,7 +33,7 @@ public class TrainerService {
         if (!grouped) {
             List<TrainerEntity> trainerEntities = trainerRepository.findAll();
             List<Trainer> trainers = TrainerEntity.toTrainer(trainerEntities);
-            return TrainerResponse.fromTrainee(trainers);
+            return TrainerResponse.fromTrainer(trainers);
         }
         return null;
     }

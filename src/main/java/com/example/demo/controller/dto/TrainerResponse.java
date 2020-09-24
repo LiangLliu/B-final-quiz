@@ -19,7 +19,7 @@ public class TrainerResponse {
 
     private String name;
 
-    public static List<TrainerResponse> fromTrainee(List<Trainer> trainers) {
+    public static List<TrainerResponse> fromTrainer(List<Trainer> trainers) {
         return trainers.stream()
                 .map(TrainerResponse::fromTrainer)
                 .collect(Collectors.toList());

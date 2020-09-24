@@ -53,4 +53,9 @@ public class TrainerEntity {
 
     }
 
+    public static List<TrainerEntity> fromTrainer(List<Trainer> trainers) {
+        return trainers.stream()
+                .map(TrainerEntity::fromTrainer)
+                .collect(Collectors.toList());
+    }
 }
