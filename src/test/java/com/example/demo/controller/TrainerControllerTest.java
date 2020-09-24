@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.JUnitWebAppTest;
-import com.example.demo.request.TrainerCreateRequest;
-import com.example.demo.response.TrainerResponse;
+import com.example.demo.controller.dto.TrainerCreateRequest;
+import com.example.demo.controller.dto.TrainerResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

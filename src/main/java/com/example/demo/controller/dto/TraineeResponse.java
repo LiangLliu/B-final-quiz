@@ -1,6 +1,6 @@
-package com.example.demo.response;
+package com.example.demo.controller.dto;
 
-import com.example.demo.domain.Trainee;
+import com.example.demo.service.domain.Trainee;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

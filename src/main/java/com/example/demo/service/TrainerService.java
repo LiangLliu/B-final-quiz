@@ -1,9 +1,12 @@
 package com.example.demo.service;
 
-import com.example.demo.domain.Trainer;
+
+import com.example.demo.repository.entity.TrainerEntity;
+
+import com.example.demo.service.domain.Trainer;
 import com.example.demo.repository.TrainerRepository;
-import com.example.demo.request.TrainerCreateRequest;
-import com.example.demo.response.TrainerResponse;
+import com.example.demo.controller.dto.TrainerCreateRequest;
+import com.example.demo.controller.dto.TrainerResponse;
 
 import org.springframework.stereotype.Service;
 
@@ -21,20 +24,17 @@ public class TrainerService {
     public TrainerResponse createTrainer(TrainerCreateRequest request) {
 
         Trainer trainer = TrainerCreateRequest.toTrainer(request);
-
-        Trainer saveTrainer = trainerRepository.save(trainer);
-
-        return TrainerResponse.fromTrainer(saveTrainer);
-
+        TrainerEntity saveEntity = trainerRepository.save(TrainerEntity.fromTrainer(trainer));
+        return TrainerResponse.fromTrainer(TrainerEntity.toTrainer(saveEntity));
     }
 
     public List<TrainerResponse> getAllTrainer(boolean grouped) {
 
         if (!grouped) {
-            List<Trainer> trainers = trainerRepository.findAll();
+            List<TrainerEntity> trainerEntities = trainerRepository.findAll();
+            List<Trainer> trainers = TrainerEntity.toTrainer(trainerEntities);
             return TrainerResponse.fromTrainee(trainers);
         }
-
         return null;
     }
 

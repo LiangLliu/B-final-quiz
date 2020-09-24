@@ -1,7 +1,9 @@
 package com.example.demo.config;
 
-import com.example.demo.domain.Trainee;
-import com.example.demo.domain.Trainer;
+import com.example.demo.repository.entity.TraineeEntity;
+import com.example.demo.repository.entity.TrainerEntity;
+import com.example.demo.service.domain.Trainee;
+import com.example.demo.service.domain.Trainer;
 import com.example.demo.repository.TraineeRepository;
 import com.example.demo.repository.TrainerRepository;
 import com.example.demo.util.ParseFile;
@@ -35,10 +37,10 @@ public class InitializingDataBean implements ApplicationRunner {
         List<String> traineeNames = ParseFile.getStudentName(FILE_TRAINEE_NAME);
         List<String> trainerNames = ParseFile.getStudentName(FILE_TRAINER_NAME);
 
-        List<Trainee> trainees = traineeNames.stream().map(
+        List<TraineeEntity> traineeEntities = traineeNames.stream().map(
                 it -> {
                     String pinyinName = PinYinUtil.toPinyin(it);
-                    return Trainee.builder()
+                    return TraineeEntity.builder()
                             .name(it)
                             .zoomId(pinyinName)
                             .office("北京")
@@ -48,15 +50,15 @@ public class InitializingDataBean implements ApplicationRunner {
                 }
         ).collect(Collectors.toList());
 
-        List<Trainee> trainees1 = traineeRepository.saveAll(trainees);
-        trainees1.forEach(it -> System.out.println(it));
+        List<TraineeEntity> traineeEntities1 = traineeRepository.saveAll(traineeEntities);
+        traineeEntities1.forEach(System.out::println);
 
-        List<Trainer> trainers = trainerNames.stream()
-                .map(it -> Trainer.builder().name(it).build())
+        List<TrainerEntity> trainerEntities = trainerNames.stream()
+                .map(it -> TrainerEntity.builder().name(it).build())
                 .collect(Collectors.toList());
 
-        List<Trainer> trainers1 = trainerRepository.saveAll(trainers);
-        trainers1.forEach(it -> System.out.println(it));
+        List<TrainerEntity> trainerEntities1 = trainerRepository.saveAll(trainerEntities);
+        trainerEntities1.forEach(System.out::println);
 
     }
 

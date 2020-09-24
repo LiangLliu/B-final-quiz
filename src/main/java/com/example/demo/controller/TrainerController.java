@@ -1,8 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.request.TrainerCreateRequest;
-import com.example.demo.response.TraineeResponse;
-import com.example.demo.response.TrainerResponse;
+import com.example.demo.controller.dto.TrainerCreateRequest;
+import com.example.demo.controller.dto.TrainerResponse;
 import com.example.demo.service.TrainerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
