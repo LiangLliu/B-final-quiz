@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
 
+import com.example.demo.exception.TraineeIdNotFoundException;
+import com.example.demo.exception.TrainerIdNotFoundException;
 import com.example.demo.repository.entity.TrainerEntity;
 
 import com.example.demo.service.domain.Trainer;
@@ -39,7 +41,9 @@ public class TrainerService {
     }
 
     public void deleteTrainerById(Long trainerId) {
-        // todo: 判断Trainer存在
+        if (!trainerRepository.existsById(trainerId)) {
+            throw new TrainerIdNotFoundException("该教师不存在");
+        }
         trainerRepository.deleteById(trainerId);
     }
 }

@@ -76,20 +76,22 @@ public class TrainerControllerTest {
     }
 
 
-    @Test
-    public void should_get_all_trainer_when_given_get_trainer_list_and_grouped_is_false() throws Exception {
+    @Nested
+    public class DeleteTrainerTest {
+        @Test
+        public void should_delete_one_trainer_when_delete_trainer_and_given_one_trainer_exist_id() throws Exception {
 
-        mockMvc.perform(get(url + "?grouped=false")
-                .characterEncoding("UTF-8"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(1))
-                .andExpect(jsonPath("$[0].name").value("Fizz"));
+            mockMvc.perform(delete(url + "/3"))
+                    .andExpect(status().isNoContent());
+        }
+
+        @Test
+        public void should_return_404_when_delete_trainer_is_is_not_exist() throws Exception {
+
+            mockMvc.perform(delete(url + "/0"))
+                    .andExpect(status().isNotFound());
+        }
+
     }
 
-    @Test
-    public void should_delete_one_trainer_when_delete_trainer_and_given_one_trainer_exist_id() throws Exception {
-
-        mockMvc.perform(delete(url + "/3"))
-                .andExpect(status().isNoContent());
-    }
 }

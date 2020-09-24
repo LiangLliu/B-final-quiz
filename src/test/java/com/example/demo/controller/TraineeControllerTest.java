@@ -131,7 +131,7 @@ public class TraineeControllerTest {
         }
 
         @Test
-        public void should_return_404_when_delete_trainee_and_given_one_trainee_exist_id() throws Exception {
+        public void should_return_404_when_delete_trainer_is_is_not_exist() throws Exception {
 
             mockMvc.perform(delete(url + "/0"))
                     .andExpect(status().isNotFound());
