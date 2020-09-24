@@ -120,11 +120,23 @@ public class TraineeControllerTest {
 
     }
 
-    @Test
-    public void should_delete_one_trainee_when_delete_trainee_and_given_one_trainee_exist_id() throws Exception {
 
-        mockMvc.perform(delete(url + "/3"))
-                .andExpect(status().isNoContent());
+    @Nested
+    public class DeleteTraineeTest {
+        @Test
+        public void should_delete_one_trainee_when_delete_trainee_and_given_one_trainee_exist_id() throws Exception {
+
+            mockMvc.perform(delete(url + "/3"))
+                    .andExpect(status().isNoContent());
+        }
+
+        @Test
+        public void should_return_404_when_delete_trainee_and_given_one_trainee_exist_id() throws Exception {
+
+            mockMvc.perform(delete(url + "/0"))
+                    .andExpect(status().isNotFound());
+        }
+
     }
 
 }

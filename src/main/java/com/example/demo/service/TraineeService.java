@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 
+import com.example.demo.exception.TraineeIdNotFoundException;
 import com.example.demo.repository.TraineeRepository;
 import com.example.demo.repository.entity.TraineeEntity;
 import com.example.demo.controller.dto.TraineeCreateRequest;
@@ -36,7 +37,11 @@ public class TraineeService {
     }
 
     public void deleteTraineeById(Long traineeId) {
-        // todo: 判断Trainee存在
+
+        if (!traineeRepository.existsById(traineeId)) {
+            throw new TraineeIdNotFoundException("该学生不存在");
+        }
+
         traineeRepository.deleteById(traineeId);
     }
 }
