@@ -11,8 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -22,7 +21,7 @@ public class TraineeControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final String url = "/trainees";
 
@@ -63,6 +62,13 @@ public class TraineeControllerTest {
                 .andExpect(jsonPath("$[0].name").value("沈乐棋"))
                 .andExpect(jsonPath("$[0].email").value("shenleqi@gtb.com"));
 
+    }
+
+    @Test
+    public void should_delete_one_trainee_when_delete_trainee_and_given_one_trainee_exist_id() throws Exception {
+
+        mockMvc.perform(delete(url + "/3"))
+                .andExpect(status().isNoContent());
     }
 
 }

@@ -28,6 +28,12 @@ public class TraineeService {
             List<Trainee> trainees = traineeRepository.findAll();
             return TraineeResponse.fromTrainee(trainees);
         }
-       return null;
+        return null;
+    }
+
+    public void deleteTraineeById(Long traineeId) {
+        // todo: 判断Trainee存在
+
+        traineeRepository.deleteById(traineeId);
     }
 }
