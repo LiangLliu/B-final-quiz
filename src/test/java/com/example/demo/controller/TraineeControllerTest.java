@@ -47,7 +47,6 @@ public class TraineeControllerTest {
         @Test
         public void should_given_one_name_when_add_one_trainee() throws Exception {
 
-
             String contentAsString = mockMvc.perform(post(url)
                     .content(objectMapper.writeValueAsString(traineeCreateRequest))
                     .contentType("application/json;charset=UTF-8")
@@ -64,6 +63,12 @@ public class TraineeControllerTest {
         @Test
         public void should_return_400_when_given_name_is_null() throws Exception {
             traineeCreateRequest.setName(null);
+            createTraineeErrorTest(traineeCreateRequest);
+        }
+
+        @Test
+        public void should_return_400_when_given_github_is_null() throws Exception {
+            traineeCreateRequest.setGithub(null);
             createTraineeErrorTest(traineeCreateRequest);
         }
 
