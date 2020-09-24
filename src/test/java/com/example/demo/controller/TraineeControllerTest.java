@@ -72,6 +72,12 @@ public class TraineeControllerTest {
             createTraineeErrorTest(traineeCreateRequest);
         }
 
+        @Test
+        public void should_return_400_when_given_office_is_null() throws Exception {
+            traineeCreateRequest.setOffice(null);
+            createTraineeErrorTest(traineeCreateRequest);
+        }
+
         private void createTraineeErrorTest(TraineeCreateRequest traineeCreateRequest) throws Exception {
 
             mockMvc.perform(post(url)
