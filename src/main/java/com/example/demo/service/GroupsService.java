@@ -73,4 +73,10 @@ public class GroupsService {
 
         return new ArrayList<>(groupsHashMap.values());
     }
+
+    public List<GroupsResponse> getAllGroup() {
+        List<GroupsEntity> groupsEntityList = groupsRepository.findAll();
+        List<Groups> groupsList = GroupsEntity.toGroups(groupsEntityList);
+        return GroupsResponse.fromGroups(groupsList);
+    }
 }
