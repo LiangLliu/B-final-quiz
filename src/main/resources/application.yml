@@ -2,6 +2,9 @@ server:
   port: 8080
 
 spring:
+  mvc:
+    dispatch-options-request: true
+
   datasource:
     url: jdbc:mysql://localhost:3306/final-quiz?characterEncoding=UTF-8
     driver-class-name: com.mysql.cj.jdbc.Driver
