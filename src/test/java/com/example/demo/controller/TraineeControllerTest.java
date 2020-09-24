@@ -28,8 +28,6 @@ public class TraineeControllerTest {
     @Test
     public void should_given_one_name_when_add_one_trainee() throws Exception {
 
-        String url = "/trainees";
-
         TraineeCreateRequest traineeCreateRequest = TraineeCreateRequest.builder()
                 .name("张三")
                 .office("背景")
