@@ -1,10 +1,11 @@
 package com.example.demo.config;
 
 import com.example.demo.domain.Trainee;
+import com.example.demo.domain.Trainer;
 import com.example.demo.repository.TraineeRepository;
+import com.example.demo.repository.TrainerRepository;
 import com.example.demo.util.ParseFile;
 import com.example.demo.util.PinYinUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 
@@ -16,20 +17,25 @@ import java.util.stream.Collectors;
 @Component
 public class InitializingDataBean implements ApplicationRunner {
 
-    private static final String FILE_NAME = "classpath:data/studentName.txt";
+    private static final String FILE_TRAINEE_NAME = "classpath:data/traineeName.txt";
+    private static final String FILE_TRAINER_NAME = "classpath:data/trainerName.txt";
+
 
     private final TraineeRepository traineeRepository;
+    private final TrainerRepository trainerRepository;
 
-    public InitializingDataBean(TraineeRepository traineeRepository) {
+    public InitializingDataBean(TraineeRepository traineeRepository, TrainerRepository trainerRepository) {
         this.traineeRepository = traineeRepository;
+        this.trainerRepository = trainerRepository;
     }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        List<String> studentNames = ParseFile.getStudentName(FILE_NAME);
+        List<String> traineeNames = ParseFile.getStudentName(FILE_TRAINEE_NAME);
+        List<String> trainerNames = ParseFile.getStudentName(FILE_TRAINER_NAME);
 
-        List<Trainee> trainees = studentNames.stream().map(
+        List<Trainee> trainees = traineeNames.stream().map(
                 it -> {
                     String pinyinName = PinYinUtil.toPinyin(it);
                     return Trainee.builder()
@@ -44,6 +50,14 @@ public class InitializingDataBean implements ApplicationRunner {
 
         List<Trainee> trainees1 = traineeRepository.saveAll(trainees);
         trainees1.forEach(it -> System.out.println(it));
+
+        List<Trainer> trainers = trainerNames.stream()
+                .map(it -> Trainer.builder().name(it).build())
+                .collect(Collectors.toList());
+
+        List<Trainer> trainers1 = trainerRepository.saveAll(trainers);
+        trainers1.forEach(it -> System.out.println(it));
+
     }
 
 }

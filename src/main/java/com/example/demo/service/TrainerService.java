@@ -7,6 +7,8 @@ import com.example.demo.response.TrainerResponse;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TrainerService {
 
@@ -24,5 +26,15 @@ public class TrainerService {
 
         return TrainerResponse.fromTrainer(saveTrainer);
 
+    }
+
+    public List<TrainerResponse> getAllTrainer(boolean grouped) {
+
+        if (!grouped) {
+            List<Trainer> trainers = trainerRepository.findAll();
+            return TrainerResponse.fromTrainee(trainers);
+        }
+
+        return null;
     }
 }

@@ -11,7 +11,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @JUnitWebAppTest
@@ -25,7 +27,7 @@ public class TrainerControllerTest {
     private final String url = "/trainers";
 
     @Test
-    public void should_given_one_name_when_add_one_trainee() throws Exception {
+    public void should_given_one_name_when_add_one_trainer() throws Exception {
 
         TrainerCreateRequest trainerCreateRequest = TrainerCreateRequest.builder()
                 .name("张三")
@@ -41,6 +43,15 @@ public class TrainerControllerTest {
         TrainerResponse trainerResponse = objectMapper.readValue(contentAsString, TrainerResponse.class);
 
         assertEquals(trainerCreateRequest.getName(), trainerResponse.getName());
+    }
 
+    @Test
+    public void should_get_all_trainer_when_given_get_trainer_list_and_grouped_is_false() throws Exception {
+
+        mockMvc.perform(get(url + "?grouped=false")
+                .characterEncoding("UTF-8"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].name").value("Fizz"));
     }
 }
