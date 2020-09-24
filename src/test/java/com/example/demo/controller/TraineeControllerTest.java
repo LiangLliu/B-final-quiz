@@ -84,6 +84,18 @@ public class TraineeControllerTest {
             createTraineeErrorTest(traineeCreateRequest);
         }
 
+        @Test
+        public void should_return_400_when_given_email_is_null() throws Exception {
+            traineeCreateRequest.setEmail(null);
+            createTraineeErrorTest(traineeCreateRequest);
+        }
+
+        @Test
+        public void should_return_400_when_given_email_is_error() throws Exception {
+            traineeCreateRequest.setEmail("test");
+            createTraineeErrorTest(traineeCreateRequest);
+        }
+
         private void createTraineeErrorTest(TraineeCreateRequest traineeCreateRequest) throws Exception {
 
             mockMvc.perform(post(url)
