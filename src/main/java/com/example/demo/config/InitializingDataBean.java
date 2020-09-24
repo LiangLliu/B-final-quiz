@@ -50,15 +50,15 @@ public class InitializingDataBean implements ApplicationRunner {
                 }
         ).collect(Collectors.toList());
 
-        List<TraineeEntity> traineeEntities1 = traineeRepository.saveAll(traineeEntities);
-        traineeEntities1.forEach(System.out::println);
+        traineeRepository.saveAll(traineeEntities);
+
 
         List<TrainerEntity> trainerEntities = trainerNames.stream()
                 .map(it -> TrainerEntity.builder().name(it).build())
                 .collect(Collectors.toList());
 
-        List<TrainerEntity> trainerEntities1 = trainerRepository.saveAll(trainerEntities);
-        trainerEntities1.forEach(System.out::println);
+        trainerRepository.saveAll(trainerEntities);
+
 
     }
 

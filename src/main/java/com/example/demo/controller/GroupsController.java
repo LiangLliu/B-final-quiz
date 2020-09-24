@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/groups")
+@CrossOrigin
 public class GroupsController {
 
     private final GroupsService groupsService;
@@ -25,7 +26,8 @@ public class GroupsController {
 
     @GetMapping
     public List<GroupsResponse> getAllGroup() {
-        return groupsService.getAllGroup();
+//        return groupsService.getAllGroup();
+        return groupsService.autoGrouping();
     }
 
     @PatchMapping("/{groupId}")

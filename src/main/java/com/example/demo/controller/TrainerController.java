@@ -4,12 +4,16 @@ import com.example.demo.controller.dto.TrainerCreateRequest;
 import com.example.demo.controller.dto.TrainerResponse;
 import com.example.demo.service.TrainerService;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/trainers")
+@CrossOrigin
+@Validated
 public class TrainerController {
 
     private final TrainerService trainerService;
@@ -20,7 +24,7 @@ public class TrainerController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TrainerResponse createTrainer(@RequestBody TrainerCreateRequest request) {
+    public TrainerResponse createTrainer(@RequestBody @Valid TrainerCreateRequest request) {
         return trainerService.createTrainer(request);
     }
 
