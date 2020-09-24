@@ -78,6 +78,12 @@ public class TraineeControllerTest {
             createTraineeErrorTest(traineeCreateRequest);
         }
 
+        @Test
+        public void should_return_400_when_given_zoom_is_null() throws Exception {
+            traineeCreateRequest.setZoomId(null);
+            createTraineeErrorTest(traineeCreateRequest);
+        }
+
         private void createTraineeErrorTest(TraineeCreateRequest traineeCreateRequest) throws Exception {
 
             mockMvc.perform(post(url)
