@@ -37,4 +37,9 @@ public class TrainerService {
 
         return null;
     }
+
+    public void deleteTrainerById(Long trainerId) {
+        // todo: 判断Trainer存在
+        trainerRepository.deleteById(trainerId);
+    }
 }

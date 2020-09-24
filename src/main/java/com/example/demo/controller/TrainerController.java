@@ -30,5 +30,11 @@ public class TrainerController {
         return trainerService.getAllTrainer(grouped);
     }
 
+    @DeleteMapping("/{trainerId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTrainerById(@PathVariable("trainerId") Long trainerId) {
+        trainerService.deleteTrainerById(trainerId);
+    }
+
 
 }
